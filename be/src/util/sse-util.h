@@ -86,8 +86,9 @@ namespace SSEUtil {
 /// mode constant into the inline asm.
 #define SSE_ALWAYS_INLINE inline __attribute__ ((__always_inline__))
 
+template<int mode>
 static SSE_ALWAYS_INLINE __m128i SSE4_cmpestrm(
-    __m128i str1, int len1, __m128i str2, int len2, const int mode) {
+    __m128i str1, int len1, __m128i str2, int len2) {
   /// Use asm reg rather than Yz output constraint to workaround LLVM bug 13199 -
   /// clang doesn't support Y-prefixed asm constraints.
   register __m128i result asm("xmm0");
@@ -96,8 +97,9 @@ static SSE_ALWAYS_INLINE __m128i SSE4_cmpestrm(
   return result;
 }
 
+template<int mode>
 static SSE_ALWAYS_INLINE int SSE4_cmpestri(
-    __m128i str1, int len1, __m128i str2, int len2, const int mode) {
+    __m128i str1, int len1, __m128i str2, int len2) {
   int result;
   __asm__("pcmpestri %5, %2, %1"
       : "=c"(result) : "x"(str1), "xm"(str2), "a"(len1), "d"(len2), "i"(mode) : "cc");
