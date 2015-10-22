@@ -132,8 +132,20 @@ static inline int64_t POPCNT_popcnt_u64(uint64_t a) {
 
 #include <smmintrin.h>
 
-#define SSE4_cmpestrm _mm_cmpestrm
-#define SSE4_cmpestri _mm_cmpestri
+template<int mode>
+static inline __m128i SSE4_cmpestrm(
+    __m128i str1, int len1, __m128i str2, int len2) {
+  return _mm_cmpestrm(str1, len1, str2, len2, mode);
+}
+
+//#define SSE4_cmpestrm _mm_cmpestrm
+//#define SSE4_cmpestri _mm_cmpestri
+template<int mode>
+static inline int SSE4_cmpestri(
+    __m128i str1, int len1, __m128i str2, int len2) {
+  return _mm_cmpestri(str1, len1, str2, len2, mode);
+}
+
 #define SSE4_crc32_u8 _mm_crc32_u8
 #define SSE4_crc32_u32 _mm_crc32_u32
 #define POPCNT_popcnt_u64 _mm_popcnt_u64
@@ -144,14 +156,16 @@ static inline int64_t POPCNT_popcnt_u64(uint64_t a) {
 /// support SSE 4.2.  However, because the caller isn't allowed to call these routines
 /// on CPUs that lack SSE 4.2 anyway, we can implement stubs for this case.
 
+template<int mode>
 static inline __m128i SSE4_cmpestrm(
-    __m128i str1, int len1, __m128i str2, int len2, const int mode) {
+    __m128i str1, int len1, __m128i str2, int len2) {
   DCHECK(false) << "CPU doesn't support SSE 4.2";
   return (__m128i) { 0 };
 }
 
+template<int mode>
 static inline int SSE4_cmpestri(
-    __m128i str1, int len1, __m128i str2, int len2, const int mode) {
+    __m128i str1, int len1, __m128i str2, int len2) {
   DCHECK(false) << "CPU doesn't support SSE 4.2";
   return 0;
 }
