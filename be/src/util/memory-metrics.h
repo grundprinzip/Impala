@@ -76,7 +76,7 @@ class TcmallocMetric : public UIntGauge {
 
   virtual void CalculateValue() {
 #ifndef ADDRESS_SANITIZER
-    MallocExtension::instance()->GetNumericProperty(tcmalloc_var_.c_str(), &value_);
+    MallocExtension::instance()->GetNumericProperty(tcmalloc_var_.c_str(), (size_t*) &value_);
 #endif
   }
 };

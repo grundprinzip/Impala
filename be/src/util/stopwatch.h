@@ -19,6 +19,8 @@
 #include <boost/cstdint.hpp>
 #include <time.h>
 
+#include "gutil/walltime.h"
+
 namespace impala {
 
 #define SCOPED_STOP_WATCH(c) \
@@ -83,15 +85,13 @@ class StopWatch {
 /// It is good for computing elapsed time.
 class MonotonicStopWatch {
  public:
-  MonotonicStopWatch() {
-    total_time_ = 0;
-    running_ = false;
-    time_ceiling_ = NULL;
+  MonotonicStopWatch() : start_(0), total_time_(0),
+      time_ceiling_(0), running_(false) {
   }
 
   void Start() {
     if (!running_) {
-      clock_gettime(CLOCK_MONOTONIC, &start_);
+      start_ = walltime_internal::GetMonoTimeNanos();
       running_ = true;
     }
   }
@@ -103,13 +103,12 @@ class MonotonicStopWatch {
     }
   }
 
-  /// Set the time ceiling of the stop watch. The stop watch won't run past the ceiling.
-  void SetTimeCeiling(const timespec& ceiling) { time_ceiling_ = &ceiling; }
-
   /// Restarts the timer. Returns the elapsed time until this point.
   uint64_t Reset() {
     uint64_t ret = ElapsedTime();
-    if (running_) clock_gettime(CLOCK_MONOTONIC, &start_);
+    if (running_) {
+      start_ = walltime_internal::GetMonoTimeNanos();
+    }
     return ret;
   }
 
@@ -125,33 +124,23 @@ class MonotonicStopWatch {
     return total_time_;
   }
 
- private:
-  const timespec* time_ceiling_;
-  timespec start_;
-  uint64_t total_time_; // in nanosec
-  bool running_;
+  void SetTimeCeiling(const uint64_t ceiling) { time_ceiling_ = ceiling; }
 
-  /// Return true if t1 is less than t2.
-  static bool TimeLessThan(const timespec& t1, const timespec& t2) {
-    return ((t1.tv_sec < t2.tv_sec) ||
-        (t1.tv_sec == t2.tv_sec && t1.tv_nsec < t2.tv_nsec));
-  }
+ private:
+  uint64_t start_;
+  uint64_t total_time_; // in nanosec
+  uint64_t time_ceiling_;
+  bool running_;
 
   /// Returns the time since start.
   /// If time_ceiling_ is set, the stop watch won't run pass the ceiling.
   uint64_t RunningTime() const {
-    timespec end;
-    clock_gettime(CLOCK_MONOTONIC, &end);
-    const timespec* actual_end = &end;
-
-    if (time_ceiling_ != NULL) {
-      // If time_ceiling_ is less than start time, return 0.
-      if (TimeLessThan(*time_ceiling_, start_)) return 0;
-      // If time_ceiling_ is less than end, use it as end time.
-      if (TimeLessThan(*time_ceiling_, end)) actual_end = time_ceiling_;
+    uint64_t end = walltime_internal::GetMonoTimeNanos();
+    if (time_ceiling_ > 0) {
+      if (time_ceiling_ < start_) return 0;
+      if (time_ceiling_ > start_) end = time_ceiling_;
     }
-    return (actual_end->tv_sec - start_.tv_sec) * 1000L * 1000L * 1000L +
-        (actual_end->tv_nsec - start_.tv_nsec);
+    return end - start_;
   }
 };
 

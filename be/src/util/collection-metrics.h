@@ -162,7 +162,7 @@ class StatsMetric : public Metric {
     container.AddMember("units", units, document->GetAllocator());
 
     if (StatsSelection & StatsType::COUNT) {
-      container.AddMember("count", boost::accumulators::count(acc_),
+      container.AddMember("count", (uint64_t) boost::accumulators::count(acc_),
           document->GetAllocator());
     }
 
@@ -198,7 +198,7 @@ class StatsMetric : public Metric {
     rapidjson::Value container(rapidjson::kObjectType);
 
     if (StatsSelection & StatsType::COUNT) {
-      container.AddMember("count", boost::accumulators::count(acc_),
+      container.AddMember("count", (uint64_t) boost::accumulators::count(acc_),
           document->GetAllocator());
     }
 

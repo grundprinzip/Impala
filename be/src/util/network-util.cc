@@ -33,7 +33,12 @@
 using boost::algorithm::is_any_of;
 using boost::algorithm::split;
 
+#ifdef __APPLE__
+#define HOST_NAME_MAX 64
+#endif
+
 namespace impala {
+
 
 static const string LOCALHOST("127.0.0.1");
 

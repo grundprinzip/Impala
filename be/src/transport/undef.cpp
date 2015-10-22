@@ -1,7 +1,13 @@
 // Copyright (c) 2012 Cloudera, Inc. All rights reserved.
 
 #include <errno.h>
-// This file defines the routines that come up undefined when statically 
+
+#ifdef __APPLE__
+// TODO(OSX) Find a better value for ELIBAC
+#define ELIBACC -1
+#endif
+
+// This file defines the routines that come up undefined when statically
 // linking the SASL library.  The library itself is configured to
 // dynamically link in the GSSAPI library.  Why it needs these
 // defined is not clear.
