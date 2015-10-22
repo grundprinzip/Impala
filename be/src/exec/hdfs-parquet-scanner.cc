@@ -1095,7 +1095,7 @@ Status HdfsParquetScanner::BaseScalarColumnReader::ReadDataPage() {
 
       // Didn't read entire header, increase buffer size and try again
       Status status;
-      int64_t new_buffer_size = max(buffer_size * 2, 1024L);
+      int64_t new_buffer_size = max(buffer_size * 2, 1024LL);
       bool success = stream_->GetBytes(
           new_buffer_size, &buffer, &new_buffer_size, &status, /* peek */ true);
       if (!success) {

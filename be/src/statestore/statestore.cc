@@ -233,12 +233,12 @@ Statestore::Statestore(MetricGroup* metrics)
 
   DCHECK(metrics != NULL);
   num_subscribers_metric_ =
-      metrics->AddGauge(STATESTORE_LIVE_SUBSCRIBERS, 0L);
+      metrics->AddGauge(STATESTORE_LIVE_SUBSCRIBERS, 0LL);
   subscriber_set_metric_ = SetMetric<string>::CreateAndRegister(metrics,
       STATESTORE_LIVE_SUBSCRIBERS_LIST, set<string>());
-  key_size_metric_ = metrics->AddGauge(STATESTORE_TOTAL_KEY_SIZE_BYTES, 0L);
-  value_size_metric_ = metrics->AddGauge(STATESTORE_TOTAL_VALUE_SIZE_BYTES, 0L);
-  topic_size_metric_ = metrics->AddGauge(STATESTORE_TOTAL_TOPIC_SIZE_BYTES, 0L);
+  key_size_metric_ = metrics->AddGauge(STATESTORE_TOTAL_KEY_SIZE_BYTES, 0LL);
+  value_size_metric_ = metrics->AddGauge(STATESTORE_TOTAL_VALUE_SIZE_BYTES, 0LL);
+  topic_size_metric_ = metrics->AddGauge(STATESTORE_TOTAL_TOPIC_SIZE_BYTES, 0LL);
 
   topic_update_duration_metric_ =
       StatsMetric<double>::CreateAndRegister(metrics, STATESTORE_UPDATE_DURATION);

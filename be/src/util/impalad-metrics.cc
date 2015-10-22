@@ -155,75 +155,75 @@ void ImpaladMetrics::CreateMetrics(MetricGroup* m) {
       ImpaladMetricKeys::IMPALA_SERVER_READY, false);
 
   IMPALA_SERVER_NUM_QUERIES = m->AddCounter(
-      ImpaladMetricKeys::IMPALA_SERVER_NUM_QUERIES, 0L);
+      ImpaladMetricKeys::IMPALA_SERVER_NUM_QUERIES, 0LL);
   NUM_QUERIES_EXPIRED = m->AddCounter(
-      ImpaladMetricKeys::NUM_QUERIES_EXPIRED, 0L);
+      ImpaladMetricKeys::NUM_QUERIES_EXPIRED, 0LL);
   NUM_QUERIES_SPILLED = m->AddCounter(
-      ImpaladMetricKeys::NUM_QUERIES_SPILLED, 0L);
+      ImpaladMetricKeys::NUM_QUERIES_SPILLED, 0LL);
   IMPALA_SERVER_NUM_FRAGMENTS = m->AddCounter(
-      ImpaladMetricKeys::IMPALA_SERVER_NUM_FRAGMENTS, 0L);
+      ImpaladMetricKeys::IMPALA_SERVER_NUM_FRAGMENTS, 0LL);
   IMPALA_SERVER_NUM_OPEN_HS2_SESSIONS = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::IMPALA_SERVER_NUM_OPEN_HS2_SESSIONS, 0L);
+      ImpaladMetricKeys::IMPALA_SERVER_NUM_OPEN_HS2_SESSIONS, 0LL);
   IMPALA_SERVER_NUM_OPEN_BEESWAX_SESSIONS = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::IMPALA_SERVER_NUM_OPEN_BEESWAX_SESSIONS, 0L);
+      ImpaladMetricKeys::IMPALA_SERVER_NUM_OPEN_BEESWAX_SESSIONS, 0LL);
   NUM_SESSIONS_EXPIRED = m->AddCounter(
-      ImpaladMetricKeys::NUM_SESSIONS_EXPIRED, 0L);
+      ImpaladMetricKeys::NUM_SESSIONS_EXPIRED, 0LL);
   RESULTSET_CACHE_TOTAL_NUM_ROWS = m->AddGauge(
-      ImpaladMetricKeys::RESULTSET_CACHE_TOTAL_NUM_ROWS, 0L);
+      ImpaladMetricKeys::RESULTSET_CACHE_TOTAL_NUM_ROWS, 0LL);
   RESULTSET_CACHE_TOTAL_BYTES = m->AddGauge(
-      ImpaladMetricKeys::RESULTSET_CACHE_TOTAL_BYTES, 0L);
+      ImpaladMetricKeys::RESULTSET_CACHE_TOTAL_BYTES, 0LL);
 
   // Initialize scan node metrics
   NUM_RANGES_PROCESSED = m->AddCounter(
-      ImpaladMetricKeys::TOTAL_SCAN_RANGES_PROCESSED, 0L);
+      ImpaladMetricKeys::TOTAL_SCAN_RANGES_PROCESSED, 0LL);
   NUM_RANGES_MISSING_VOLUME_ID = m->AddCounter(
-      ImpaladMetricKeys::NUM_SCAN_RANGES_MISSING_VOLUME_ID, 0L);
+      ImpaladMetricKeys::NUM_SCAN_RANGES_MISSING_VOLUME_ID, 0LL);
 
   // Initialize memory usage metrics
   MEM_POOL_TOTAL_BYTES = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::MEM_POOL_TOTAL_BYTES, 0L);
+      ImpaladMetricKeys::MEM_POOL_TOTAL_BYTES, 0LL);
   HASH_TABLE_TOTAL_BYTES = m->AddGauge(
-      ImpaladMetricKeys::HASH_TABLE_TOTAL_BYTES, 0L);
+      ImpaladMetricKeys::HASH_TABLE_TOTAL_BYTES, 0LL);
 
   // Initialize insert metrics
   NUM_FILES_OPEN_FOR_INSERT = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::NUM_FILES_OPEN_FOR_INSERT, 0L);
+      ImpaladMetricKeys::NUM_FILES_OPEN_FOR_INSERT, 0LL);
 
   // Initialize IO mgr metrics
   IO_MGR_NUM_OPEN_FILES = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::IO_MGR_NUM_OPEN_FILES, 0L);
-  IO_MGR_NUM_BUFFERS = m->AddGauge<int64_t>(ImpaladMetricKeys::IO_MGR_NUM_BUFFERS, 0L);
-  IO_MGR_TOTAL_BYTES = m->AddGauge<int64_t>(ImpaladMetricKeys::IO_MGR_TOTAL_BYTES, 0L);
+      ImpaladMetricKeys::IO_MGR_NUM_OPEN_FILES, 0LL);
+  IO_MGR_NUM_BUFFERS = m->AddGauge<int64_t>(ImpaladMetricKeys::IO_MGR_NUM_BUFFERS, 0LL);
+  IO_MGR_TOTAL_BYTES = m->AddGauge<int64_t>(ImpaladMetricKeys::IO_MGR_TOTAL_BYTES, 0LL);
   IO_MGR_NUM_UNUSED_BUFFERS = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::IO_MGR_NUM_UNUSED_BUFFERS, 0L);
+      ImpaladMetricKeys::IO_MGR_NUM_UNUSED_BUFFERS, 0LL);
   IO_MGR_NUM_CACHED_FILE_HANDLES = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::IO_MGR_NUM_CACHED_FILE_HANDLES, 0L);
+      ImpaladMetricKeys::IO_MGR_NUM_CACHED_FILE_HANDLES, 0LL);
   IO_MGR_NUM_FILE_HANDLES_OUTSTANDING = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::IO_MGR_NUM_FILE_HANDLES_OUTSTANDING, 0L);
+      ImpaladMetricKeys::IO_MGR_NUM_FILE_HANDLES_OUTSTANDING, 0LL);
 
   IO_MGR_CACHED_FILE_HANDLES_HIT_COUNT = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::IO_MGR_CACHED_FILE_HANDLES_HIT_COUNT, 0L);
+      ImpaladMetricKeys::IO_MGR_CACHED_FILE_HANDLES_HIT_COUNT, 0LL);
 
   IO_MGR_CACHED_FILE_HANDLES_MISS_COUNT = m->AddGauge<int64_t>(
-      ImpaladMetricKeys::IO_MGR_CACHED_FILE_HANDLES_MISS_COUNT, 0L);
+      ImpaladMetricKeys::IO_MGR_CACHED_FILE_HANDLES_MISS_COUNT, 0LL);
 
-  IO_MGR_BYTES_READ = m->AddCounter(ImpaladMetricKeys::IO_MGR_BYTES_READ, 0L);
+  IO_MGR_BYTES_READ = m->AddCounter(ImpaladMetricKeys::IO_MGR_BYTES_READ, 0LL);
   IO_MGR_LOCAL_BYTES_READ = m->AddCounter(
-      ImpaladMetricKeys::IO_MGR_LOCAL_BYTES_READ, 0L);
+      ImpaladMetricKeys::IO_MGR_LOCAL_BYTES_READ, 0LL);
   IO_MGR_CACHED_BYTES_READ = m->AddCounter<int64_t>(
-      ImpaladMetricKeys::IO_MGR_CACHED_BYTES_READ, 0L);
+      ImpaladMetricKeys::IO_MGR_CACHED_BYTES_READ, 0LL);
   IO_MGR_SHORT_CIRCUIT_BYTES_READ = m->AddCounter<int64_t>(
-      ImpaladMetricKeys::IO_MGR_SHORT_CIRCUIT_BYTES_READ, 0L);
+      ImpaladMetricKeys::IO_MGR_SHORT_CIRCUIT_BYTES_READ, 0LL);
   IO_MGR_BYTES_WRITTEN = m->AddCounter<int64_t>(
-      ImpaladMetricKeys::IO_MGR_BYTES_WRITTEN, 0L);
+      ImpaladMetricKeys::IO_MGR_BYTES_WRITTEN, 0LL);
 
   IO_MGR_CACHED_FILE_HANDLES_HIT_RATIO =
       StatsMetric<uint64_t, StatsType::MEAN>::CreateAndRegister(m,
       ImpaladMetricKeys::IO_MGR_CACHED_FILE_HANDLES_HIT_RATIO);
 
   // Initialize catalog metrics
-  CATALOG_NUM_DBS = m->AddGauge<int64_t>(ImpaladMetricKeys::CATALOG_NUM_DBS, 0L);
-  CATALOG_NUM_TABLES = m->AddGauge<int64_t>(ImpaladMetricKeys::CATALOG_NUM_TABLES, 0L);
+  CATALOG_NUM_DBS = m->AddGauge<int64_t>(ImpaladMetricKeys::CATALOG_NUM_DBS, 0LL);
+  CATALOG_NUM_TABLES = m->AddGauge<int64_t>(ImpaladMetricKeys::CATALOG_NUM_TABLES, 0LL);
   CATALOG_READY = m->AddProperty<bool>(ImpaladMetricKeys::CATALOG_READY, false);
 
   // Maximum duration to be tracked by the query durations metric. No particular reasoning

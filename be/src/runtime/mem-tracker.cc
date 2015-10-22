@@ -201,7 +201,7 @@ MemTracker::~MemTracker() {
 }
 
 void MemTracker::RegisterMetrics(MetricGroup* metrics, const string& prefix) {
-  num_gcs_metric_ = metrics->AddCounter(Substitute("$0.num-gcs", prefix), 0L);
+  num_gcs_metric_ = metrics->AddCounter(Substitute("$0.num-gcs", prefix), 0LL);
 
   // TODO: Consider a total amount of bytes freed counter
   bytes_freed_by_last_gc_metric_ = metrics->AddGauge<int64_t>(
@@ -302,7 +302,7 @@ bool MemTracker::ExpandRmReservation(int64_t bytes) {
   if (requested < rm_reserved_limit_) return true;
 
   TResourceBrokerExpansionRequest exp;
-  query_resource_mgr_->CreateExpansionRequest(max(1L, bytes / (1024 * 1024)), 0L, &exp);
+  query_resource_mgr_->CreateExpansionRequest(max(1LL, bytes / (1024 * 1024)), 0LL, &exp);
 
   TResourceBrokerExpansionResponse response;
   Status status = ExecEnv::GetInstance()->resource_broker()->Expand(exp, &response);
@@ -316,7 +316,7 @@ bool MemTracker::ExpandRmReservation(int64_t bytes) {
   DCHECK(response.allocated_resources.size() == 1) << "Got more resources than expected";
   const llama::TAllocatedResource& resource =
       response.allocated_resources.begin()->second;
-  DCHECK(resource.v_cpu_cores == 0L) << "Unexpected VCPUs returned by Llama";
+  DCHECK(resource.v_cpu_cores == 0LL) << "Unexpected VCPUs returned by Llama";
 
   // Finally, check whether the allocation that we got took us over the limits for any of
   // our ancestors.
