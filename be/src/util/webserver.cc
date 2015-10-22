@@ -46,6 +46,10 @@
 
 #include "common/names.h"
 
+#ifdef __APPLE__
+typedef sig_t sighandler_t;
+#endif
+
 using boost::algorithm::is_any_of;
 using boost::algorithm::split;
 using boost::algorithm::trim_right;
