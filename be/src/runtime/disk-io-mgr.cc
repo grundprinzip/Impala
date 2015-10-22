@@ -23,6 +23,10 @@ DECLARE_bool(disable_mem_pools);
 
 #include "common/names.h"
 
+#ifdef __APPLE__
+#include <fcntl.h>
+#endif
+
 using namespace impala;
 using namespace strings;
 
@@ -1114,7 +1118,14 @@ Status DiskIoMgr::WriteRangeHelper(FILE* file_handle, WriteRange* write_range) {
   int file_desc = fileno(file_handle);
   int success = 0;
   if (write_range->len_ > 0) {
+    #ifndef __APPLE__
     success = posix_fallocate(file_desc, write_range->offset(), write_range->len_);
+    #else
+    // http://stackoverflow.com/questions/11497567/fallocate-command-equivalent-in-os-x
+    fstore_t store = {F_ALLOCATECONTIG, F_PEOFPOSMODE,
+        write_range->offset(), write_range->len_};
+    success = fcntl(file_desc, F_PREALLOCATE, &store);
+    #endif
   }
   if (success != 0) {
     return Status(ErrorMsg(TErrorCode::RUNTIME_ERROR,
@@ -1188,7 +1199,7 @@ DiskIoMgr::HdfsCachedFileHandle* DiskIoMgr::OpenHdfsFile(const hdfsFS& fs,
 
   // Check if a cached file handle exists and validate the mtime, if the mtime of the
   // cached handle is not matching the mtime of the requested file, reopen.
-  if (detail::is_file_handle_caching_enabled() && file_handle_cache_.Pop(fname, &fh)) {
+  if (::detail::is_file_handle_caching_enabled() && file_handle_cache_.Pop(fname, &fh)) {
     ImpaladMetrics::IO_MGR_NUM_CACHED_FILE_HANDLES->Increment(-1L);
     if (fh->mtime() == mtime) {
       ImpaladMetrics::IO_MGR_CACHED_FILE_HANDLES_HIT_RATIO->Update(1L);
@@ -1222,7 +1233,7 @@ void DiskIoMgr::CacheOrCloseFileHandle(const char* fname,
   // Try to unbuffer the handle, on filesystems that do not support this call a non-zero
   // return code indicates that the operation was not successful and thus the file is
   // closed.
-  if (detail::is_file_handle_caching_enabled() &&
+  if (::detail::is_file_handle_caching_enabled() &&
       !close && hdfsUnbufferFile(fid->file()) == 0) {
     // Clear read statistics before returning
     hdfsFileClearReadStatistics(fid->file());
